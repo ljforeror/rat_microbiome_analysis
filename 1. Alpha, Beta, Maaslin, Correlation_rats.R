@@ -25,8 +25,10 @@ library(patchwork)
 ################################################################################
 ############################ 2. DIRECTORIES ####################################
 ################################################################################
+# ===== EDIT THIS: set the path to your data folder =====
+analysis_path <- "your_data_folder/"
 
-base_path <- "/scratch/project_2007408/Microbiome_Mice/Microbiome_Endotarget_mice/I"
+base_path <- "//Microbiome_Endotarget_mice/I"
 analysis_path <- paste0(base_path,"/R_analysis_1")
 
 Figures  <- paste0(analysis_path,"/New_Results/")
@@ -38,14 +40,9 @@ dir.create(Figures, showWarnings = FALSE, recursive = TRUE)
 ############################ 3. LOAD METADATA ##################################
 ################################################################################
 # ── Clinical variables ───────────────────────────────────────────────
-datos_variables <- read.table(
-  "/scratch/project_2007408/Microbiome_Mice/Microbiome_Endotarget_mice/I/R_analysis_1/df_completo_4.csv",
-  header           = TRUE,
-  sep              = ",",
-  stringsAsFactors = FALSE
-)
+datos_variables <-read.csv(file.path(analysis_path, "your_clinical_data_file.csv"))
 
-metadata <- read.csv(paste0(analysis_path,"/Metadata.csv"), row.names = 1)
+metadata <- read.csv(file.path(analysis_path, "your_metadata_file.csv"))
 
 metadata$Time_point <- factor(metadata$Time_point,
                               levels = c("Baseline","Midpoint","Endpoint"),
@@ -62,13 +59,13 @@ metadata$Rat.ID <- as.factor(metadata$Rat.ID)
 ############################ 4. LOAD PHYLOSEQ ##################################
 ################################################################################
 
-taxa <- read.csv(paste0(base_path,"/Results/_taxa_final_1_mod.csv"), row.names = 1)
+taxa <- read.csv(file.path(analysis_path, "your_taxonomy_file.csv"))
 tax_mat <- as.matrix(taxa)
 
-seq <- read.csv(paste0(base_path,"/Results/_taxa_asv_final_1.csv"), row.names = 1)
+seq <- read.csv(file.path(analysis_path, "your_asv_counts_file.csv"))
 otu_mat <- as.matrix(t(seq))
 
-tree <- read.tree(paste0(base_path,"/Results/GTR.phy"))
+tree <- read.tree(paste0(base_path,"your_tree_file.phy""))
 
 taxa1 <- read.csv(paste0(base_path,"/Results/_taxa_final_1.csv"), row.names = 1)
 name_dict <- setNames(rownames(taxa1), taxa1$seq)
